@@ -1,0 +1,26 @@
+name: Build Android APK
+
+on:
+  push:
+    branches: [ "main", "master" ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Code auschecken
+        uses: actions/checkout@v4
+
+      - name: APK mit Buildozer bauen
+        uses: ArtemSydoryk/buildozer-action@v1
+        with:
+          command: buildozer -v android debug
+          buildozer_version: master
+
+      - name: Fertige APK als Artefakt speichern
+        uses: actions/upload-artifact@v4
+        with:
+          name: python-app-debug-apk
+          path: bin/*.apk
