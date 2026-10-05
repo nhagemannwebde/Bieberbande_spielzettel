@@ -19,8 +19,8 @@ jobs:
           command: buildozer -v android debug
           buildozer_version: master
 
-      - name: Fertige APK als Artefakt speichern
-        uses: actions/upload-artifact@v4
+     - name: APK mit Buildozer bauen
+        uses: kivy/buildozer-action@v1
         with:
-          name: python-app-debug-apk
-          path: bin/*.apk
+          command: buildozer -v android debug
+          buildozer_version: master
