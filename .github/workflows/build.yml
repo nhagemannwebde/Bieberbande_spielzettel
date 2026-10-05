@@ -13,11 +13,44 @@ jobs:
       - name: Code auschecken
         uses: actions/checkout@v4
 
-      - name: APK mit Buildozer bauen
-        uses: kivy/buildozer-action@v1
+      - name: Python einrichten
+        uses: actions/setup-python@v5
         with:
-          command: buildozer -v android debug
-          buildozer_version: master
+          python-version: '3.11'
+
+      - name: System-Abhängigkeiten installieren
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            build-essential \
+            git \
+            ffmpeg \
+            libsdl2-dev \
+            libsdl2-image-dev \
+            libsdl2-mixin-dev \
+            libsdl2-ttf-dev \
+            libportmidi-dev \
+            libswscale-dev \
+            libavformat-dev \
+            libavcodec-dev \
+            zlib1g-dev \
+            openjdk-17-jdk \
+            zip \
+            unzip \
+            autoconf \
+            libtool \
+            pkg-config \
+            libffi-dev \
+            libssl-dev
+
+      - name: Buildozer und Cython installieren
+        run: |
+          pip install --upgrade pip setuptools
+          pip install buildozer cython
+
+      - name: APK mit Buildozer bauen
+        run: |
+          buildozer -v android debug
 
       - name: Fertige APK als Artefakt speichern
         uses: actions/upload-artifact@v4
